@@ -1,0 +1,14 @@
+**/.ipynb_checkpoints
+**/__pycache__
+server/ply/*
+*.mp4
+*.png
+*.npy
+*.npz
+*.dae
+*.obj
+data/*
+logs/*
+.vscode/
+render/
+reconstruct.ipynb

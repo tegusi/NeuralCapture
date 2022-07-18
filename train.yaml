@@ -1,0 +1,65 @@
+description: train_nerf_visualization
+
+target:
+  service: amlk8s
+  # run "pt target list amlk8s" to list the names of available AMLK8s targets
+  name: itpscusv100cl
+  vc: resrchvc
+
+
+environment:
+  image: eximple/hnerf:base
+
+code:
+  # local directory of the code. this will be uploaded to the server.
+  local_dir: $CONFIG_DIR
+
+# data:
+#   local_dir: $CONFIG_DIR/data/mocap
+#   remote_dir: data/mocap
+
+storage:
+    data_container:
+        storage_account_name: nerf
+        container_name: phillytools
+        mount_dir: /mnt/default
+    output_container:
+        storage_account_name: nerf
+        container_name: outputs-te
+        mount_dir: /mnt/output  
+
+jobs:
+- name: doublefusion
+  sku: G1
+  command:
+  - python train.py --data_dir /mnt/default/data/mocap/doublefusion --test_dir /mnt/default/data/mocap/doublefusion --output_dir $$AMLT_OUTPUT_DIR/logs --smpl_dir /mnt/default/data/mocap/smpl --test_rays 15000 --train_rays 6000 --scale 2 --use_direction --use_bkgd --optimize_smpl
+
+- name: zju_386
+  sku: G1
+  command:
+  - python train.py --data_dir /mnt/default/data/mocap/zju-386-neutral --test_dir /mnt/default/data/mocap/zju-386-neutral --output_dir $$AMLT_OUTPUT_DIR/logs --smpl_dir /mnt/default/data/mocap/smpl --test_rays 15000 --train_rays 6000 --scale 2 --use_direction --optimize_smpl --use_bkgd
+
+- name: zju_313
+  sku: G1
+  command:
+  - python train.py --data_dir /mnt/default/data/mocap/zju-313-neutral --test_dir /mnt/default/data/mocap/zju-313-neutral --output_dir $$AMLT_OUTPUT_DIR/logs --smpl_dir /mnt/default/data/mocap/smpl --test_rays 15000 --train_rays 6000 --scale 2 --use_direction --optimize_smpl --use_bkgd
+
+- name: snapshot_female_3
+  sku: G1
+  command:
+  - python train.py --data_dir /mnt/default/data/mocap/female-3-casual --test_dir /mnt/default/data/mocap/female-3-casual --output_dir $$AMLT_OUTPUT_DIR/logs --smpl_dir /mnt/default/data/mocap/smpl --test_rays 15000 --train_rays 6000 --scale 2 --use_direction --optimize_smpl
+
+- name: snapshot_male_1
+  sku: G1
+  command:
+  - python train.py --data_dir /mnt/default/data/mocap/male-1-sport --test_dir /mnt/default/data/mocap/male-1-sport --output_dir $$AMLT_OUTPUT_DIR/logs --smpl_dir /mnt/default/data/mocap/smpl --test_rays 15000 --train_rays 6000 --scale 2 --use_direction --optimize_smpl
+
+- name: spin_11
+  sku: G1
+  command:
+  - python train.py --data_dir /mnt/default/data/mocap/spin-11-neutral --test_dir /mnt/default/data/mocap/spin-11-neutral --output_dir $$AMLT_OUTPUT_DIR/logs --smpl_dir /mnt/default/data/mocap/smpl --test_rays 15000 --train_rays 6000 --scale 2 --use_direction --optimize_smpl
+
+- name: spin_09
+  sku: G1
+  command:
+  - python train.py --data_dir /mnt/default/data/mocap/spin-09-neutral --test_dir /mnt/default/data/mocap/spin-09-neutral --output_dir $$AMLT_OUTPUT_DIR/logs --smpl_dir /mnt/default/data/mocap/smpl --test_rays 15000 --train_rays 6000 --scale 2 --use_direction --optimize_smpl
