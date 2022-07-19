@@ -1,4 +1,4 @@
-# Neural Total Capture of 3D Human from Monocular Video
+# Neural Capture of 3D Human from Monocular Video
 
 This repository provides a reference implementation for the ECCV 2022 paper *Neural Capture of Animatable 3D Human from Monocular Video*.
 
